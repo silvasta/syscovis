@@ -3,19 +3,33 @@ from pathlib import Path
 from rich.console import Console
 
 console = Console()
+# console = Console(record=True)
+# console = Console(theme=)
 
 
 class Plotter:
     def __init__(
-        self, save=True, show=True, name="", root_indicator="toml", plot_dir="/plots"
+        self, save=True, show=True, name="", root_indicator="toml", plot_dir="plots"
     ):
+        console.print(
+            "Initialize plotter...",
+            end=" ",
+            style="bold cyan blink",
+        )
         self.save: bool = save
         self.show: bool = show
         self.root_indicator: str = root_indicator
-        self.project_root_dir = Plotter.find_project_root()
+        self.project_root_dir: Path = Plotter.find_project_root()
         self.plot_dir: Path = self.create_plot_dir(plot_dir)
         self.task_name: str = name
-        console.print("plotter is ready to plot...", style="bold cyan blink")
+        console.print(
+            "PLOTTER IS READY TO PLOT",
+            style="bold white on cyan",
+            justify="center",
+        )
+        # console.print("plotter is ready to plot...", style="bold cyan blink")
+        # console.save_svg("plots/plotter.svg")
+        # console.save_html("plots/plotter.html")
 
     @staticmethod
     def find_project_root(indicator="toml") -> Path:
@@ -28,8 +42,9 @@ class Plotter:
             "git": ".git",
             "venv": ".venv",
         }
-        # select indicator, use pyproject.toml as default
+        # select indicator, use pyproject.toml as fallback
         indicator_path = root_indicators.get(indicator, "pyproject.toml")
+        # indicator_path = "bla"
         # set current location as start
         run_dir = Path.cwd()
         current_dir = run_dir
@@ -39,14 +54,16 @@ class Plotter:
                 break
             current_dir = current_dir.parent
         if current_dir != Path("/"):
-            console.print("Project root found!", style="green")
+            console.print("Project root found!", end=" ", style="green")
+            # console.print(current_dir, style="white", emoji=True)
             return current_dir
         else:
-            console.print("Project root not found!", style="red bold")
+            console.print("Project root not found!", style="magenta bold")
             console.print(f"Set [cwd = {run_dir}] as project root", style="yellow")
             return run_dir
 
     def create_plot_dir(self, plot_dir: str) -> Path:
-        path = self.project_root_dir / plot_dir
-        path.mkdir(parents=True, exist_ok=True)
-        return path
+        plot_path = self.project_root_dir / Path(plot_dir)
+        console.print(f"set path for plots: {plot_path}", style="white italic")
+        plot_path.mkdir(parents=True, exist_ok=True)
+        return plot_path
