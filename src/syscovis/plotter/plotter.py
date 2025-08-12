@@ -1,10 +1,12 @@
 from pathlib import Path
 
 from rich.console import Console
+from loguru import logger
 
 console = Console()
 # console = Console(record=True)
 # console = Console(theme=)
+logger.debug(f"Importing {__name__}")
 
 
 class Plotter:
@@ -27,6 +29,7 @@ class Plotter:
             style="bold white on cyan",
             justify="center",
         )
+        # TODO: save console output from plotter (or other instance)
         # console.print("plotter is ready to plot...", style="bold cyan blink")
         # console.save_svg("plots/plotter.svg")
         # console.save_html("plots/plotter.html")
