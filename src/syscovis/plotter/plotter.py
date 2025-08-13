@@ -6,7 +6,7 @@ from loguru import logger
 console = Console()
 # console = Console(record=True)
 # console = Console(theme=)
-logger.debug(f"Importing {__name__}")
+# logger.debug(f"Importing {__name__}")
 
 
 class Plotter:
@@ -16,7 +16,7 @@ class Plotter:
         console.print(
             "Initialize plotter...",
             end=" ",
-            style="bold cyan blink",
+            style="bold cyan",
         )
         self.save: bool = save
         self.show: bool = show
@@ -26,11 +26,13 @@ class Plotter:
         self.task_name: str = name
         console.print(
             "PLOTTER IS READY TO PLOT",
-            style="bold white on cyan",
+            # style="bold white on cyan",
+            # style="bold cyan on white",
+            style="bold blink cyan on white",
             justify="center",
         )
         # TODO: save console output from plotter (or other instance)
-        # console.print("plotter is ready to plot...", style="bold cyan blink")
+        # console.print("plotter is ready to plot...", style="bold cyan")
         # console.save_svg("plots/plotter.svg")
         # console.save_html("plots/plotter.html")
 
@@ -70,3 +72,7 @@ class Plotter:
         console.print(f"set path for plots: {plot_path}", style="white italic")
         plot_path.mkdir(parents=True, exist_ok=True)
         return plot_path
+
+    def plot(self, plot_name="task_ .jpg"):
+        plot_path = self.plot_dir / plot_name
+        print(f"save plot to {plot_path}")
