@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from rich.console import Console
-from loguru import logger
+# from loguru import logger
 
 console = Console()
 # console = Console(record=True)
